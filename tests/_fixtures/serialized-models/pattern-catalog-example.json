@@ -1,0 +1,28 @@
+{
+  "patterns": [
+    {
+      "name": "jpeg",
+      "type": "literal",
+      "scope": "extension",
+      "value": [".jpeg", ".jpg"]
+    },
+    {
+      "name": "md",
+      "type": "literal",
+      "scope": "extension",
+      "value": [".md", ".markdown"]
+    },
+    {
+      "name": "_values",
+      "type": "literal",
+      "scope": "filename",
+      "value": ["_values.yml", "_values.yaml"]
+    },
+    {
+      "name": "_virtual",
+      "type": "regex",
+      "scope": "filename",
+      "value": ".*\\.virt.yaml"
+    }
+  ]
+}

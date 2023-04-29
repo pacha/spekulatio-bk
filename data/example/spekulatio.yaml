@@ -1,0 +1,15 @@
+
+output_dir:
+  - path: build/
+input_dirs:
+  - path: content/
+    transformations:
+      - pattern:
+          value: ".*\.md"
+          type: regex
+          scope: filename
+        action:
+          name: optimize_jpeg
+          params:
+            foo: bar
+        output_name_template: "{{ input_path.name }}.html"

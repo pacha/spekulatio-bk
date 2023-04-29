@@ -1,0 +1,12 @@
+patterns:
+  - name: "markdown"
+    type: "literal"
+    scope: "extension"
+    value:
+      - ".md"
+      - ".mkd"
+      - ".mkdn"
+      - ".mdwn"
+      - ".mdwon"
+      - ".markdown"
+
