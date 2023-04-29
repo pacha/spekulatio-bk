@@ -1,2 +1,5 @@
-# spekulatio
-Command line tool to transform file trees
+
+Spekulatio
+==========
+
+Command line tool to transform file trees.
