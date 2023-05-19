@@ -118,8 +118,8 @@ class Node(Model):
         # set data from overriden paths
         for input_dir in self.input_dirs:
             full_input_path = self.get_full_input_path(input_dir)
-            value_set = ValueSet.from_path(full_input_path)
-            value_set.update(
+            attribute_set = AttributeFile(path=full_input_path)
+            attribute_set.update(
                 descendants_data=self._descendants_data,
                 children_data=self._children_data,
                 local_data=self._local_data,

@@ -3,6 +3,9 @@ output_dir:
   - path: build/
 input_dirs:
   - path: content/
+    value_files:
+      - ["_values.yaml", "_values.yml"]
+      - ["_values_override.yaml", "_values_override.yml"]
     transformations:
       - pattern:
           value: ".*\.md"

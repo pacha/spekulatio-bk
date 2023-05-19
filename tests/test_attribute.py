@@ -10,8 +10,8 @@ def test_attribute_instantiation():
 
     assert attribute.name == "foo"
     assert attribute.value == 3
-    assert attribute.scope == "descendants"
-    assert attribute.operation == "replace"
+    assert attribute.scope == "this_and_descendants"
+    assert attribute.operation == "set"
 
 
 def test_attribute_wrong_instantiation():
@@ -50,7 +50,7 @@ def test_attribute_partial_extended_syntax():
     assert attribute.name == "foo"
     assert attribute.value == 3
     assert attribute.scope == "children"
-    assert attribute.operation == "replace"
+    assert attribute.operation == "set"
 
 
 def test_attribute_wrong_partial_extended_syntax():
@@ -68,7 +68,7 @@ def test_attribute_wrong_extend_operation():
     data = {
         "_": "extended-syntax",
         "value": 3,
-        "operation": "extend",
+        "operation": "append",
     }
     with pytest.raises(ValidationError):
         _ = Attribute(name="foo", value=data)

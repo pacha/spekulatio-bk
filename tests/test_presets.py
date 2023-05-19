@@ -1,15 +1,15 @@
 import pytest
 from pydantic import ValidationError
 
-from spekulatio.models import Preset
+from spekulatio.models import PresetRegistry
 from spekulatio.models import InputDir
 from spekulatio.models import Transformation
 
 
 def test_preset_registration(fixtures_path):
     # patterns are globally registered by default if they have a name
-    preset = Preset(
-        **{
+    preset_registry = PresetRegistry(presets=[
+        {
             "name": "site-content",
             "transformations": [
                 {
@@ -25,11 +25,12 @@ def test_preset_registration(fixtures_path):
                 }
             ],
         }
-    )
+    ])
 
     # create an input dir
     input_dir = InputDir(
         root_path=fixtures_path,
+        preset_registry=preset_registry,
         **{
             "path": "empty-input-dir",
             "preset": "site-content",
@@ -48,7 +49,7 @@ def test_preset_registration(fixtures_path):
             ],
         }
     )
-    assert input_dir.preset == preset
+    assert input_dir.preset.name == "site-content"
 
 
 def test_missing_preset(fixtures_path):

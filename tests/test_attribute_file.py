@@ -9,8 +9,8 @@ def test_attribute_file_dir_yaml(fixtures_path):
     assert len(attribute_file._index) == 1
     assert attribute_file._index["foo"].name == "foo"
     assert attribute_file._index["foo"].value == 3
-    assert attribute_file._index["foo"].scope == "descendants"
-    assert attribute_file._index["foo"].operation == "replace"
+    assert attribute_file._index["foo"].scope == "this_and_descendants"
+    assert attribute_file._index["foo"].operation == "set"
 
 
 def test_attribute_file_dir_json(fixtures_path):
@@ -21,5 +21,5 @@ def test_attribute_file_dir_json(fixtures_path):
     assert len(attribute_file._index) == 1
     assert attribute_file._index["foo"].name == "foo"
     assert attribute_file._index["foo"].value == 3
-    assert attribute_file._index["foo"].scope == "descendants"
-    assert attribute_file._index["foo"].operation == "replace"
+    assert attribute_file._index["foo"].scope == "this_and_descendants"
+    assert attribute_file._index["foo"].operation == "set"

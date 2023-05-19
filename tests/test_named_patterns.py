@@ -3,22 +3,22 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from spekulatio.models import NamedPattern
+from spekulatio.models import PatternRegistry
 from spekulatio.models import Transformation
 
 
 def test_named_pattern_registration():
-    # patterns are globally registered by default if they have a name
-    _ = NamedPattern(
-        **{
+    pattern_registry = PatternRegistry(patterns=[
+        {
             "name": "jpeg",
             "type": "regex",
             "value": r"^.*\.(jpeg|jpg)",
         }
-    )
+    ])
 
     # create a transformation
     transformation = Transformation(
+        pattern_registry=pattern_registry,
         **{
             "pattern": "jpeg",
             "action": {
@@ -30,18 +30,18 @@ def test_named_pattern_registration():
 
 
 def test_missing_named_pattern():
-    # patterns are globally registered by default if they have a name
-    _ = NamedPattern(
-        **{
+    pattern_registry = PatternRegistry(patterns=[
+        {
             "name": "jpeg",
             "type": "regex",
             "value": r"^.*\.(jpeg|jpg)",
         }
-    )
+    ])
 
     # create a transformation
     with pytest.raises(ValidationError):
         _ = Transformation(
+            pattern_registry=pattern_registry,
             **{
                 "pattern": "md",
                 "action": {

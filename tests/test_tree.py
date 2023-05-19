@@ -47,16 +47,16 @@ def test_parent_child_relationship(fixtures_path):
 
     assert len(tree) == 6
 
-    expected_ids = {
-        ".",
-        "dir1",
-        "dir1/file1.txt",
-        "dir1/dir2",
-        "dir1/dir2/file2.txt",
-        "file3.txt",
+    expected_node_paths = {
+        "/",
+        "/dir1",
+        "/dir1/file1.txt",
+        "/dir1/dir2",
+        "/dir1/dir2/file2.txt",
+        "/file3.txt",
     }
-    actual_ids = set(tree.input_index.keys())
-    assert expected_ids == actual_ids
+    actual_node_paths = set(tree.input_index.keys())
+    assert expected_node_paths == actual_node_paths
 
 
 def test_from_input_dir(fixtures_path):
@@ -64,18 +64,17 @@ def test_from_input_dir(fixtures_path):
     tree = Tree()
     tree.from_input_dir(input_dir=input_dir)
 
-    expected_ids = {
-        ".",
-        "dir1",
-        "dir1/dir3",
-        "dir1/dir3/file4.md",
-        "dir1/file3.md",
-        "dir2",
-        "dir2/file5.md",
-        "file1.md",
-        "file2.md",
+    expected_node_paths = {
+        "/",
+        "/dir1",
+        "/dir1/dir3",
+        "/dir1/dir3/file4.md",
+        "/dir1/file3.md",
+        "/dir2",
+        "/dir2/file5.md",
+        "/file1.md",
+        "/file2.md",
     }
-    actual_ids = set(tree.input_index.keys())
-    assert expected_ids == actual_ids
-    # tree.setup()
-    # tree.build()
+    actual_node_paths = set(tree.input_index.keys())
+    assert expected_node_paths == actual_node_paths
+

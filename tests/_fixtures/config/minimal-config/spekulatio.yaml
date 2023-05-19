@@ -1,0 +1,4 @@
+
+output_dir:
+  path: "build"
+input_dirs: []

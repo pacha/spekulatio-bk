@@ -3,17 +3,30 @@ from typing import Generator
 from pydantic import validator
 
 from spekulatio import Model
-from spekulatio.registry import obj_registry
 from spekulatio.lib.traverse_dir import traverse_dir
-from .preset import Preset
-from .transformation import Transformation
+from . import Preset
+from . import Transformation
+from . import PresetRegistry
+from . import PatternRegistry
 
 
 class InputDir(Model):
     root_path: Path
+    pattern_registry: PatternRegistry = PatternRegistry()
     path: Path
+    preset_registry: PresetRegistry = PresetRegistry()
     preset: Preset | None
     transformations: list[Transformation] = []
+    value_files: list[list[str]] = [
+        ["_values.yaml", "_values.yml", "_values.json", "_values.py", "_values"],
+        [
+            "_values-override.yaml",
+            "_values-override.yml",
+            "_values-override.json",
+            "_values-override.py",
+            "_values-override",
+        ],
+    ]
 
     @validator("path", pre=True)
     def check_path(cls, value, values):
@@ -24,15 +37,25 @@ class InputDir(Model):
         return absolute_path
 
     @validator("preset", pre=True)
-    def check_preset(cls, value):
+    def check_preset(cls, value, values):
+        preset_registry = values['preset_registry']
         if isinstance(value, str):
             try:
-                preset = obj_registry[Preset][value]
+                preset = preset_registry[value]
             except KeyError:
                 raise ValueError(f"Named preset '{ value }' doesn't exist.")
         else:
             preset = value
         return preset
+
+    @validator("transformations", pre=True)
+    def check_transformations(cls, value, values):
+        try:
+            for transformation in value:
+                transformation['pattern_registry'] = values['pattern_registry']
+        except Exception:
+            raise ValueError("'transformation' must be a dictionary of values.")
+        return value
 
     @property
     def absolute_path(self) -> Path:

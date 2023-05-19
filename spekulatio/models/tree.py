@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Generator
 
 from spekulatio import Model
+from spekulatio.models import NodePath
 from spekulatio.models import InputDir
 from spekulatio.errors import SpekulatioInternalError
 from .node import Node
@@ -32,11 +33,13 @@ class Tree(Model):
             node.build()
 
     def add_node(self, path: Path, input_dir: InputDir):
-        path_id = str(path)
-        is_root_path = path_id == "."
+        node_path = NodePath(path)
+        is_root_path = node_path == "/"
+
+        # add node
         try:
             # get already existing node
-            node = self.input_index[path_id]
+            node = self.input_index[node_path]
             node.input_dirs.append(input_dir)
         except KeyError:
             # create node
@@ -50,16 +53,16 @@ class Tree(Model):
                 node.parent = None
             else:
                 try:
-                    parent_path_id = str(path.parent)
-                    node.parent = self.input_index[parent_path_id]
+                    parent_node_path = NodePath(path.parent)
+                    node.parent = self.input_index[parent_node_path]
                     node.parent.children.append(node)
                 except KeyError:
                     raise SpekulatioInternalError(
-                        f"Error while trying to attach path: { path_id }. "
+                        f"Error while trying to attach path: { path }. "
                         "Parent hasn't been attached first."
                     )
             # add node to index
-            self.input_index[path_id] = node
+            self.input_index[node_path] = node
         return node
 
     def traverse_tree(cls, node) -> Generator[Node, None, None]:

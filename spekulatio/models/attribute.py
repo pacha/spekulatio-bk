@@ -7,22 +7,28 @@ from spekulatio import Model
 
 
 class AttributeScope(str, Enum):
-    descendants = "descendants"
+    this = "this"
+    this_and_children = "this_and_children"
     children = "children"
-    local = "local"
+    this_and_descendants = "this_and_descendants"
+    descendants = "descendants"
 
 
 class AttributeOperation(str, Enum):
-    replace = "replace"  # type: ignore
+    set = "set"  # type: ignore
+    set_if_not_exists = "set_if_not_exists"
     merge = "merge"
-    extend = "extend"
+    prepend = "prepend"
+    append = "append"
     delete = "delete"
 
 
 valid_operations = {
-    "replace": object,
+    "set": object,
+    "set_if_not_exists": object,
     "merge": dict,
-    "extend": list,
+    "prepend": list,
+    "append": list,
     "delete": object,
 }
 
@@ -30,8 +36,8 @@ valid_operations = {
 class Attribute(Model):
     name: str
     value: Any
-    scope: AttributeScope = AttributeScope.descendants
-    operation: AttributeOperation = AttributeOperation.replace
+    scope: AttributeScope = AttributeScope.this_and_descendants
+    operation: AttributeOperation = AttributeOperation.set
 
     @root_validator(pre=True)
     def check_extended_syntax(cls, items):

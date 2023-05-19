@@ -4,22 +4,24 @@ from pydantic import Field
 from pydantic import validator
 
 from spekulatio import Model
-from spekulatio.registry import obj_registry
 from .pattern import Pattern
 from .named_pattern import NamedPattern
+from .pattern_registry import PatternRegistry
 from .action import Action
 
 
 class Transformation(Model):
+    pattern_registry: PatternRegistry = PatternRegistry()
     pattern: Pattern
     action: Action
     output_name_template: str = "{{ input_path.name }}"
 
     @validator("pattern", pre=True)
-    def check_pattern(cls, value):
+    def check_pattern(cls, value, values):
+        pattern_registry = values['pattern_registry']
         if isinstance(value, str):
             try:
-                pattern = obj_registry[NamedPattern][value]
+                pattern = pattern_registry[value]
             except KeyError:
                 raise ValueError(f"Named pattern '{ value }' doesn't exist.")
         else:

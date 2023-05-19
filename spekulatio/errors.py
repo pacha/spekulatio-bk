@@ -8,3 +8,8 @@ class SpekulatioInternalError(SpekulatioError):
     """Irrecoverable and inconsistent state found during execution."""
 
     pass
+
+class SpekulatioConfigError(SpekulatioError):
+    """Configuration error detected in user provided data."""
+
+    pass

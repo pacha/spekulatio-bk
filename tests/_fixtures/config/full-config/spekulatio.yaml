@@ -1,0 +1,16 @@
+
+patterns:
+  - name: jpeg
+    type: regex
+    value: '^.*\.(jpeg|jpg)'
+  - name: md
+    type: glob
+    value:
+      - '*.md'
+      - '*.markdown'
+output_dir:
+  path: output-dir
+input_dirs:
+  - path: input-dir1
+  - path: input-dir2
+
